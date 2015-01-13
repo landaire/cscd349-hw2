@@ -8,7 +8,8 @@ import java.util.Observer;
  * Created by Lander Brandt on 1/13/15.
  */
 public class EyeOfSauron extends Observable {
-    public void addEnemies(SauronEnemy[] enemies) {
+    public void setEnemies(SauronEnemy[] enemies) {
+        setChanged();
         notifyObservers(enemies);
     }
 }

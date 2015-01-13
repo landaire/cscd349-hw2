@@ -22,35 +22,21 @@ public class SauronAlly implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        // Count the different types of enemies
-        HashMap<SauronEnemy.Type, Integer> enemyCounts = new HashMap<SauronEnemy.Type, Integer>();
         SauronEnemy[] enemies = (SauronEnemy[])o;
 
-        for (SauronEnemy enemy : enemies) {
-            if (!enemyCounts.containsKey(enemy.type())) {
-                // If the key doesn't exist then we will get null if we try the operation further down
-                // so set the count to 1 to set the object
-                enemyCounts.put(enemy.type(), 1);
-            } else {
-                // Increment the existing integer by 1
-                enemyCounts.put(enemy.type(), enemyCounts.get(enemy.type()) + 1);
-            }
-        }
-
         StringBuilder enemiesObserved = new StringBuilder();
+        int totalCount = 0;
 
-        Iterator it = enemyCounts.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
+        for (SauronEnemy enemy : enemies) {
+            if (enemiesObserved.length() > 0) {
+                enemiesObserved.append(", ");
+            }
+            enemiesObserved.append(enemy);
 
-            String enemyType = ((SauronEnemy.Type)pairs.getKey()).name();
-            Integer count = (Integer)pairs.getValue();
-            String pluralEnemies = count > 1 ? "enemies" : "enemy";
-
-            enemiesObserved.append(String.format("%d %s of type %s", count, pluralEnemies, enemyType));
+            totalCount += enemy.count();
         }
 
-        System.out.printf("%s has spotted %d enemies! %s\n", name(), enemies.length, enemiesObserved);
+        System.out.printf("%s has spotted %d enemies! %s\n", name(), totalCount, enemiesObserved);
     }
 
     /**
